@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 import socket
+import base64
 
 
 def main():
@@ -10,10 +11,13 @@ def main():
 
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect((host, port))
+    client.send('..')
+    res_msg = client.recv(4096)
+    print res_msg
     
     while True:
-        msg = raw_input()
-        client.send(msg)
+        msg = raw_input('> ')
+        client.send(base64.b64encode(msg))
         res_msg = client.recv(4096)
         if res_msg == last_msg:
             client.send(last_msg)
